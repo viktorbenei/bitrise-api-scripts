@@ -48,6 +48,13 @@ finish_call_response="$(curl --fail \
   "https://api.bitrise.io/v0.1/apps/${app_id}/finish" \
   -d '{"stack_id":"osx-xcode-edge","mode":"manual"}')"
 
+# ---------------------------------------------------------
+# The app is registered and available at this point,
+# but it's registered with a very bare-bone base config (bitrise.yml),
+# without a webhook and without SSH key config.
+# The rest of the script is responsible for adding these.
+# ---------------------------------------------------------
+
 # Upload bitrise.yml / build config if specified
 echo
 echo -e "${YELLOW}# Upload bitrise.yml ...${NC}"
