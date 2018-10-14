@@ -34,7 +34,7 @@ check_required_env_var 'REPO_URL'
 
 # register repo
 echo
-echo -e "${YELLOW}# Register repository ...${NC}"
+echo -e "${YELLOW}# Register repository ($REPO_URL) ...${NC}"
 app_id="$(curl -H "Authorization: token ${BITRISE_PERSONAL_ACCESS_TOKEN}" \
   'https://api.bitrise.io/v0.1/apps/register' \
   -d '{"provider":"custom","is_public":false,"repo_url":"'"${REPO_URL}"""'''","type":"git"}' | jq -r '.slug')"
@@ -52,6 +52,7 @@ finish_call_response="$(curl --fail \
 echo
 echo -e "${YELLOW}# Upload bitrise.yml ...${NC}"
 if [ ! -z "${BITRISE_YML_PATH}" ] ; then
+    echo " Uploading from file: ${BITRISE_YML_PATH}"
     jq -n --arg yml_content "$(cat "$BITRISE_YML_PATH")" \
         '{app_config_datastore_yaml: $yml_content }' | curl --fail \
         -X POST \
